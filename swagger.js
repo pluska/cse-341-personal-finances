@@ -5,8 +5,8 @@ const doc = {
         title: 'CSE-341 Personal finances',
         description: 'Final project for CSE-341.',
     },
-    host: 'localhost:3000',
-    schemes: ['http'],
+    host: 'cse-341-personal-finances.onrender.com',
+    schemes: ['https'],
 };
 
 const output = './swagger.json';
