@@ -1,0 +1,36 @@
+//LOCALHOST
+### Get All Cars
+GET http://localhost:3000/users
+
+### Get Car By ID
+GET http://localhost:3000/users/671d3829ec08e944d00c2695
+
+
+### Create User
+POST http://localhost:3000/budgets
+Content-Type: application/json
+
+{
+  "user_id": "671d3829ec08e944d00c2695",
+  "name": "October 2024",
+  "description": "Budget from my home",
+  "total_income_planned": "10000",
+  "total_expense_planned": "9000",
+  "actual_income": "10000",
+  "actual_expense": "5500"
+}
+
+### Update Car
+PUT http://localhost:3000/users/671d3829ec08e944d00c2695
+Content-Type: application/json
+
+{
+    "first_name": "Andres",
+    "last_name": "Pluska",
+    "email": "pluskaandres@outlook.com",
+    "password": "$2b$10$uMXb6T/FAEImbWkiAbyBUuF2k9vVjP/hWgrQckSK6i67sBzSEfFO6"
+}
+
+### Delete Car
+DELETE http://localhost:3000/car/
+
