@@ -255,7 +255,7 @@
         }
       }
     },
-    "/budgets/user/{id}": {
+    "/budgets/user/{user_id}": {
       "get": {
         "tags": [
           "budgets"
@@ -266,7 +266,7 @@
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "user_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -573,7 +573,7 @@
         }
       }
     },
-    "/movements/user/{id}": {
+    "/movements/user/{user_id}": {
       "get": {
         "tags": [
           "incomes"
@@ -584,7 +584,7 @@
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "user_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -600,7 +600,7 @@
         }
       }
     },
-    "/movements/budget/{id}": {
+    "/movements/budget/{budget_id}": {
       "get": {
         "tags": [
           "incomes"
@@ -611,7 +611,7 @@
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "budget_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -683,7 +683,7 @@
         }
       }
     },
-    "/loans/user/{id}": {
+    "/loans/user/{user_id}": {
       "get": {
         "description": "",
         "produces": [
@@ -691,7 +691,7 @@
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "user_id",
             "in": "path",
             "required": true,
             "type": "string"
