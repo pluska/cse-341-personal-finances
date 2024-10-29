@@ -1,27 +1,12 @@
 const mongodb = require('../data/database');
 const { ObjectId } = require('mongodb');
 
-const COLLECTION_NAME = 'budgets';
+const COLLECTION_NAME = 'expenses';
 
 const getAll = async (req, res) => {
-    //#swagger.tags=['budgets']
+    //#swagger.tags=['expenses']
     try {
-        const list = await mongodb.getDatabase().collection(`${COLLECTION_NAME}`).find().toArray();
-        res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(list);
-    } catch (err) {
-        res.status(400).json({ message: err });
-    }
-};
-
-const getAllByUserId = async (req, res) => {
-    //#swagger.tags=['budgets']
-    try {
-        const list = await mongodb
-            .getDatabase()
-            .collection(`${COLLECTION_NAME}`)
-            .find({ user_id: new ObjectId(req.params.user_id) })
-            .toArray();
+        const list = await mongodb.getDatabase().collection(COLLECTION_NAME).find().toArray();
         res.setHeader('Content-Type', 'application/json');
         res.status(200).json(list);
     } catch (err) {
@@ -30,14 +15,14 @@ const getAllByUserId = async (req, res) => {
 };
 
 const getById = async (req, res) => {
-    //#swagger.tags=['budgets']
+    //#swagger.tags=['expenses']
     if (!ObjectId.isValid(req.params.id)) {
         res.status(400).json({ message: 'Specified id is not valid' });
         return;
     }
     const id = new ObjectId(req.params.id);
     try {
-        const result = await mongodb.getDatabase().collection(`${COLLECTION_NAME}`).findOne({ _id: id });
+        const result = await mongodb.getDatabase().collection(COLLECTION_NAME).findOne({ _id: id });
         if (!result) {
             res.status(404).json({ message: 'Not found' });
             return;
@@ -50,17 +35,16 @@ const getById = async (req, res) => {
 };
 
 const create = async (req, res) => {
-    //#swagger.tags=['budgets']
-    const newBudget = {
+    //#swagger.tags=['expenses']
+    const newExpense = {
+        "budget_id": new ObjectId(req.body.budget_id),
         "user_id": new ObjectId(req.body.user_id),
-        "name": req.body.name,
+        "amount": req.body.amount,
+        "date": new Date(req.body.date),
         "description": req.body.description,
-        "total_income_planned": req.body.total_income_planned,
-        "total_expense_planned": req.body.total_expense_planned,
-        "actual_income": req.body.actual_income,
-        "actual_expense": req.body.actual_expense,
-        };
-    const result = await mongodb.getDatabase().collection(`${COLLECTION_NAME}`).insertOne(newBudget);
+        "category": req.body.category,
+    };
+    const result = await mongodb.getDatabase().collection(COLLECTION_NAME).insertOne(newExpense);
     if (result.insertedCount === 0) {
         res.status(500).json({ error: 'An error occurred while creating.' });
         return;
@@ -69,24 +53,23 @@ const create = async (req, res) => {
 };
 
 const update = async (req, res) => {
-    //#swagger.tags=['budgets']
+    //#swagger.tags=['expenses']
     if (!ObjectId.isValid(req.params.id)) {
         res.status(400).json({ message: 'Specified id is not valid' });
         return;
     }
     const id = new ObjectId(req.params.id);
-    const updateBudget = {
+    const updatedExpense = {
+        "budget_id": new ObjectId(req.body.budget_id),
         "user_id": new ObjectId(req.body.user_id),
-        "name": req.body.name,
+        "amount": req.body.amount,
+        "date": new Date(req.body.date),
         "description": req.body.description,
-        "total_income_planned": req.body.total_income_planned,
-        "total_expense_planned": req.body.total_expense_planned,
-        "actual_income": req.body.actual_income,
-        "actual_expense": req.body.actual_expense,
-        };
-    const result = await mongodb.getDatabase().collection(`${COLLECTION_NAME}`).replaceOne(
+        "category": req.body.category,
+    };
+    const result = await mongodb.getDatabase().collection(COLLECTION_NAME).replaceOne(
         { _id: id },
-        updateBudget,
+        updatedExpense,
     );
     if (result.modifiedCount === 0) {
         res.status(500).json({ error: 'An error occurred while updating.' });
@@ -96,13 +79,13 @@ const update = async (req, res) => {
 };
 
 const deleteOne = async (req, res) => {
-    //#swagger.tags=['budgets']
+    //#swagger.tags=['expenses']
     if (!ObjectId.isValid(req.params.id)) {
         res.status(400).json({ message: 'Specified id is not valid' });
         return;
     }
     const id = req.params.id;
-    const result = await mongodb.getDatabase().collection(`${COLLECTION_NAME}`).deleteOne({ _id: new ObjectId(id) });
+    const result = await mongodb.getDatabase().collection(COLLECTION_NAME).deleteOne({ _id: new ObjectId(id) });
     if (result.deletedCount === 0) {
         res.status(500).json({ error: 'An error occurred while deleting.' });
         return;
@@ -112,7 +95,6 @@ const deleteOne = async (req, res) => {
 
 module.exports = {
     getAll,
-    getAllByUserId,
     getById,
     create,
     update,

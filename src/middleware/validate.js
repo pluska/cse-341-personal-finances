@@ -47,9 +47,128 @@ const saveBudget = (req, res, next) => {
     });
 }
 
+const saveExpense = (req, res, next) => {
+    const validationRules = {
+        user_id: 'required|string',
+        amount: 'required|numeric',
+        date: 'required|string',
+        time: 'required|string',
+        description: 'string',
+        expense_type_url: 'required|string',
+    }
+
+    validator(req.body, validationRules, {}, (err, status) => {
+        if (!status) {
+            res.status(412)
+                .send({
+                    success: false,
+                    message: 'Validation failed',
+                    data: err
+                });
+        } else {
+            next();
+        }
+    });
+}
+
+const saveIncomeSource = (req, res, next) => {
+    const validationRules = {
+        user_id: 'required|string',
+        name: 'required|string',
+        parent_id: 'string',
+    }
+
+    validator(req.body, validationRules, {}, (err, status) => {
+        if (!status) {
+            res.status(412)
+                .send({
+                    success: false,
+                    message: 'Validation failed',
+                    data: err
+                });
+        } else {
+            next();
+        }
+    });
+}
+
+const saveLoanSource = (req, res, next) => {
+    const validationRules = {
+        user_id: 'required|string',
+        name: 'required|string',
+        parent_id: 'string',
+    }
+
+    validator(req.body, validationRules, {}, (err, status) => {
+        if (!status) {
+            res.status(412)
+                .send({
+                    success: false,
+                    message: 'Validation failed',
+                    data: err
+                });
+        } else {
+            next();
+        }
+    });
+}
+
+const saveLoan = (req, res, next) => {
+    const validationRules = {
+        user_id: 'required|string',
+        loan_source_id: 'required|string',
+        amount: 'required|numeric',
+        loan_date: 'required|string',
+        due_date: 'required|string',
+        description: 'string',
+    }
+
+    validator(req.body, validationRules, {}, (err, status) => {
+        if (!status) {
+            res.status(412)
+                .send({
+                    success: false,
+                    message: 'Validation failed',
+                    data: err
+                });
+        } else {
+            next();
+        }
+    });
+}
+
+const saveMovement = (req, res, next) => {
+    const validationRules = {
+        user_id: 'required|string',
+        budget_id: 'required|string',
+        type: 'required|string',
+        amount: 'required|numeric',
+        date: 'required|string',
+        description: 'string',
+    }
+
+    validator(req.body, validationRules, {}, (err, status) => {
+        if (!status) {
+            res.status(412)
+                .send({
+                    success: false,
+                    message: 'Validation failed',
+                    data: err
+                });
+        } else {
+            next();
+        }
+    });
+}
+
 
 
 module.exports = {
     saveUser,
-    saveBudget
+    saveBudget,
+    saveExpense,
+    saveIncomeSource,
+    saveLoanSource,
+    saveLoan,
+    saveMovement
 }

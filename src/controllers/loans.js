@@ -1,12 +1,11 @@
 const mongodb = require('../data/database');
 const { ObjectId } = require('mongodb');
 
-const COLLECTION_NAME = 'budgets';
+const COLLECTION_NAME = 'loans';
 
 const getAll = async (req, res) => {
-    //#swagger.tags=['budgets']
     try {
-        const list = await mongodb.getDatabase().collection(`${COLLECTION_NAME}`).find().toArray();
+        const list = await mongodb.getDatabase().collection(COLLECTION_NAME).find().toArray();
         res.setHeader('Content-Type', 'application/json');
         res.status(200).json(list);
     } catch (err) {
@@ -15,11 +14,10 @@ const getAll = async (req, res) => {
 };
 
 const getAllByUserId = async (req, res) => {
-    //#swagger.tags=['budgets']
     try {
         const list = await mongodb
             .getDatabase()
-            .collection(`${COLLECTION_NAME}`)
+            .collection(COLLECTION_NAME)
             .find({ user_id: new ObjectId(req.params.user_id) })
             .toArray();
         res.setHeader('Content-Type', 'application/json');
@@ -30,14 +28,13 @@ const getAllByUserId = async (req, res) => {
 };
 
 const getById = async (req, res) => {
-    //#swagger.tags=['budgets']
     if (!ObjectId.isValid(req.params.id)) {
         res.status(400).json({ message: 'Specified id is not valid' });
         return;
     }
     const id = new ObjectId(req.params.id);
     try {
-        const result = await mongodb.getDatabase().collection(`${COLLECTION_NAME}`).findOne({ _id: id });
+        const result = await mongodb.getDatabase().collection(COLLECTION_NAME).findOne({ _id: id });
         if (!result) {
             res.status(404).json({ message: 'Not found' });
             return;
@@ -50,17 +47,14 @@ const getById = async (req, res) => {
 };
 
 const create = async (req, res) => {
-    //#swagger.tags=['budgets']
-    const newBudget = {
+    const newLoan = {
         "user_id": new ObjectId(req.body.user_id),
-        "name": req.body.name,
+        "amount": req.body.amount,
+        "loan_date": new Date(req.body.loan_date),
+        "due_date": new Date(req.body.due_date),
         "description": req.body.description,
-        "total_income_planned": req.body.total_income_planned,
-        "total_expense_planned": req.body.total_expense_planned,
-        "actual_income": req.body.actual_income,
-        "actual_expense": req.body.actual_expense,
-        };
-    const result = await mongodb.getDatabase().collection(`${COLLECTION_NAME}`).insertOne(newBudget);
+    };
+    const result = await mongodb.getDatabase().collection(COLLECTION_NAME).insertOne(newLoan);
     if (result.insertedCount === 0) {
         res.status(500).json({ error: 'An error occurred while creating.' });
         return;
@@ -69,25 +63,19 @@ const create = async (req, res) => {
 };
 
 const update = async (req, res) => {
-    //#swagger.tags=['budgets']
     if (!ObjectId.isValid(req.params.id)) {
         res.status(400).json({ message: 'Specified id is not valid' });
         return;
     }
     const id = new ObjectId(req.params.id);
-    const updateBudget = {
+    const updatedLoan = {
         "user_id": new ObjectId(req.body.user_id),
-        "name": req.body.name,
+        "amount": req.body.amount,
+        "loan_date": new Date(req.body.loan_date),
+        "due_date": new Date(req.body.due_date),
         "description": req.body.description,
-        "total_income_planned": req.body.total_income_planned,
-        "total_expense_planned": req.body.total_expense_planned,
-        "actual_income": req.body.actual_income,
-        "actual_expense": req.body.actual_expense,
-        };
-    const result = await mongodb.getDatabase().collection(`${COLLECTION_NAME}`).replaceOne(
-        { _id: id },
-        updateBudget,
-    );
+    };
+    const result = await mongodb.getDatabase().collection(COLLECTION_NAME).replaceOne({ _id: id }, updatedLoan);
     if (result.modifiedCount === 0) {
         res.status(500).json({ error: 'An error occurred while updating.' });
         return;
@@ -96,13 +84,12 @@ const update = async (req, res) => {
 };
 
 const deleteOne = async (req, res) => {
-    //#swagger.tags=['budgets']
     if (!ObjectId.isValid(req.params.id)) {
         res.status(400).json({ message: 'Specified id is not valid' });
         return;
     }
-    const id = req.params.id;
-    const result = await mongodb.getDatabase().collection(`${COLLECTION_NAME}`).deleteOne({ _id: new ObjectId(id) });
+    const id = new ObjectId(req.params.id);
+    const result = await mongodb.getDatabase().collection(COLLECTION_NAME).deleteOne({ _id: id });
     if (result.deletedCount === 0) {
         res.status(500).json({ error: 'An error occurred while deleting.' });
         return;
