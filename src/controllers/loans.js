@@ -4,6 +4,7 @@ const { ObjectId } = require('mongodb');
 const COLLECTION_NAME = 'loans';
 
 const getAll = async (req, res) => {
+    //#swagger.tags=['loans']
     try {
         const list = await mongodb.getDatabase().collection(COLLECTION_NAME).find().toArray();
         res.setHeader('Content-Type', 'application/json');
@@ -14,6 +15,7 @@ const getAll = async (req, res) => {
 };
 
 const getAllByUserId = async (req, res) => {
+    //#swagger.tags=['loans']
     try {
         const list = await mongodb
             .getDatabase()
@@ -28,6 +30,7 @@ const getAllByUserId = async (req, res) => {
 };
 
 const getById = async (req, res) => {
+    //#swagger.tags=['loans']
     if (!ObjectId.isValid(req.params.id)) {
         res.status(400).json({ message: 'Specified id is not valid' });
         return;
@@ -47,6 +50,7 @@ const getById = async (req, res) => {
 };
 
 const create = async (req, res) => {
+    //#swagger.tags=['loans']
     const newLoan = {
         "user_id": new ObjectId(req.body.user_id),
         "amount": req.body.amount,
@@ -63,6 +67,7 @@ const create = async (req, res) => {
 };
 
 const update = async (req, res) => {
+    //#swagger.tags=['loans']
     if (!ObjectId.isValid(req.params.id)) {
         res.status(400).json({ message: 'Specified id is not valid' });
         return;
@@ -84,6 +89,7 @@ const update = async (req, res) => {
 };
 
 const deleteOne = async (req, res) => {
+    //#swagger.tags=['loans']
     if (!ObjectId.isValid(req.params.id)) {
         res.status(400).json({ message: 'Specified id is not valid' });
         return;
