@@ -11,7 +11,7 @@ const getAll = async (req, res) => {
         res.setHeader('Content-Type', 'application/json');
         res.status(200).json(list);
     } catch (err) {
-        res.status(400).json({ message: err });
+        res.status(400).json({ message: 'An error occurred' });
     }
 };
 
